@@ -11,9 +11,23 @@ void calculateSum(ll n) {
     for (ll i = 1; i <= n; ++i) {
         sum += i;
     }
+
+    std::cout << "Reached Problematic Section for n: " << n << std::endl;
+
     // Automatically acquires and releases lock (RAII style)
     std::lock_guard<std::mutex> lock(mtx);
-    total += n;
+
+    std::cout << "Current total: " << total << ", n: " << n << std::endl;
+
+    ll temp = total;
+    std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Add a small delay
+    temp += n;
+    total = temp;
+
+    // Problematic Section ends
+    std::cout << "Finished Problematic Section for n: " << n << std::endl;
+
+    // Lock is automatically released when lock_guard goes out of scope
 }
 
 int main() {
